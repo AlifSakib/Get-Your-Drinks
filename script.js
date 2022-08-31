@@ -1,7 +1,7 @@
 //Loading Data
 const loadData = async () => {
   const res = await fetch(
-    `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=all`
+    `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list`
   );
   const data = await res.json();
   return data;
@@ -23,45 +23,73 @@ const displayCatagories = async () => {
       newLi.classList.add("py-2");
       newLi.classList.add("px-4");
       newLi.classList.add("rounded-lg");
-      newLi.classList.add("bg-red-500");
+      newLi.classList.add("hover:bg-orange-500");
       //   newLi.textContent = drink.strCategory;
       newLi.innerHTML = `
-    <span class="text-white">${drink.strCategory}</span>
+    <span class="">${drink.strCategory}</span>
     `;
       cataroriesUl.appendChild(newLi);
     }
   });
 };
+// Display Drinks
 
-const displayDrinks = async () => {
-  const data = await loadData();
-  const drinks = data.drinks;
-  console.log(drinks[0]);
-  const drinkContainer = document.getElementById("drinks-container");
+const searchField = document.getElementById("search-field");
+searchField.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    const searchInput = searchField.value;
+    searchProgress(true);
+    const displayDrinks = async (search) => {
+      const res = await fetch(
+        `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`
+      );
+      const data = await res.json();
 
-  drinks.forEach((drink) => {
-    const drinksDiv = document.createElement("div");
-    const { strDrink: name, strDrinkThumb: image } = drink;
-    drinksDiv.classList.add("card");
-    drinksDiv.classList.add("w-96");
-    drinksDiv.classList.add("bg-base-100");
-    drinksDiv.classList.add("shadow-xl");
-    drinksDiv.innerHTML = `
-    <figure class="px-10 pt-10">
-    <img src="${image}" alt="Shoes" class="rounded-xl" />
+      const drinks = data.drinks;
+
+      const drinkContainer = document.getElementById("drinks-container");
+      drinkContainer.innerHTML = "";
+
+      drinks.forEach((drink) => {
+        const drinksDiv = document.createElement("div");
+        const {
+          strDrink: name,
+          strDrinkThumb: image,
+          strInstructions: instruction,
+        } = drink;
+        drinksDiv.classList.add("card");
+        drinksDiv.classList.add("w-94");
+        drinksDiv.classList.add("bg-base-100");
+        drinksDiv.classList.add("shadow-xl");
+        drinksDiv.innerHTML = `
+    <figure class="">
+    <img src="${image}" alt="Shoes" class="rounded-t-xl" />
   </figure>
   <div class="card-body items-center text-center">
     <h2 class="card-title">${name}</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <p>${instruction.slice(0, 50)}</p>
     <div class="card-actions">
-      <button class="btn btn-primary">Buy Now</button>
+      <button class="btn btn-primary">Show Details</button>
     </div>
   </div>
 
     `;
-    drinkContainer.appendChild(drinksDiv);
-  });
-};
+        drinkContainer.appendChild(drinksDiv);
+      });
+      searchProgress();
+    };
+    displayDrinks(searchInput);
+  }
+});
 
-displayDrinks();
+function searchProgress(isTrue) {
+  const progress = document.getElementById("progress");
+
+  if (isTrue === true) {
+    progress.classList.remove("hidden");
+  } else {
+    progress.classList.add("hidden");
+  }
+}
+// displayDrinks("");
 displayCatagories();

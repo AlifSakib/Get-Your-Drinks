@@ -43,7 +43,7 @@
     <!-- Tittle -->
     <title>Get Your Drinks</title>
   </head>
-  <body class="font-quicksand text-slate-500 bg-slate-700">
+  <body class="font-quicksand text-slate-500">
     <header>
       <!-- Navbar -->
       <nav>
@@ -88,14 +88,14 @@
       <!-- Navbar Ends  -->
     </header>
 
-    <main class="mt-10">
+    <main class="my-10">
       <section class="w-9/12 mx-auto">
-        <div class="flex space-x-6">
+        <div class="flex md:space-x-6">
           <!-- Catagories  -->
-          <div class="flex-none">
+          <div class="flex-none hidden md:block">
             <ul
               id="catarories-ul"
-              class="bg-white text-black text-xl px-5 py-8 space-y-4 rounded-lg"
+              class="text-black text-xl px-5 py-8 space-y-4 rounded-lg"
             >
               <h1 class="text-center font-bold">CATAGORIES</h1>
             </ul>
@@ -104,13 +104,17 @@
           <!-- Drinks Container -->
           <div
             id="drinks-container"
-            class="flex-1 w-64 grid grid-cols-3 gap-10"
+            class="flex-1 w-64 grid md:grid-cols-2 lg:grid-cols-4 gap-10"
           ></div>
+
           <!-- Drinks Container End-->
           <!-- <div class="flex-none ...">03</div> -->
         </div>
       </section>
     </main>
+    <section id="progress" class="flex justify-center">
+      <progress class="progress bg-white w-96 hidden"></progress>
+    </section>
     <script src="./script.js"></script>
   </body>
 </html>
