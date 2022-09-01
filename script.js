@@ -23,73 +23,70 @@ const displayCatagories = async () => {
       newLi.classList.add("py-2");
       newLi.classList.add("px-4");
       newLi.classList.add("rounded-lg");
+      newLi.classList.add("bg-white");
       newLi.classList.add("hover:bg-orange-500");
       //   newLi.textContent = drink.strCategory;
       newLi.innerHTML = `
-    <span class="">${drink.strCategory}</span>
+    <span class="text-black">${drink.strCategory}</span>
     `;
       cataroriesUl.appendChild(newLi);
     }
   });
 };
-// Display Drinks
+
+/* const catagories = document
+  .getElementById("catarories-ul")
+  .addEventListener("click", function (e) {
+    const searchField = document.getElementById("search-field");
+    searchField.value = e.target.innerText;
+
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=${searchField.value}`;
+
+    console.log(url);
+  }); */
 
 const searchField = document.getElementById("search-field");
-searchField.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
+
+searchField.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
     const searchInput = searchField.value;
-    searchProgress(true);
-    const displayDrinks = async (search) => {
-      const res = await fetch(
-        `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`
-      );
+
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
+
+    const loadDrinks = async () => {
+      const res = await fetch(url);
       const data = await res.json();
+      displayDrinks(data.drinks);
+    };
+    loadDrinks();
+  }
+});
+const displayDrinks = (drinks) => {
+  const drinksContainer = document.getElementById("drinks-container");
 
-      const drinks = data.drinks;
+  drinks.forEach((drink) => {
+    const drinksDiv = document.createElement("div");
+    drinksDiv.classList.add("card");
+    drinksDiv.classList.add("w-60");
+    drinksDiv.classList.add("bg-base-100");
+    drinksDiv.classList.add("shadow-xl");
 
-      const drinkContainer = document.getElementById("drinks-container");
-      drinkContainer.innerHTML = "";
-
-      drinks.forEach((drink) => {
-        const drinksDiv = document.createElement("div");
-        const {
-          strDrink: name,
-          strDrinkThumb: image,
-          strInstructions: instruction,
-        } = drink;
-        drinksDiv.classList.add("card");
-        drinksDiv.classList.add("w-94");
-        drinksDiv.classList.add("bg-base-100");
-        drinksDiv.classList.add("shadow-xl");
-        drinksDiv.innerHTML = `
+    const { strDrink: name, strDrinkThumb: image } = drink;
+    drinksDiv.innerHTML = `
     <figure class="">
-    <img src="${image}" alt="Shoes" class="rounded-t-xl" />
+    <img src=${image} alt="Drinks" class="rounded-t-xl" />
   </figure>
   <div class="card-body items-center text-center">
     <h2 class="card-title">${name}</h2>
-    <p>${instruction.slice(0, 50)}</p>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
     <div class="card-actions">
-      <button class="btn btn-primary">Show Details</button>
+      <button class="btn btn-primary">Buy Now</button>
     </div>
   </div>
-
     `;
-        drinkContainer.appendChild(drinksDiv);
-      });
-      searchProgress();
-    };
-    displayDrinks(searchInput);
-  }
-});
 
-function searchProgress(isTrue) {
-  const progress = document.getElementById("progress");
-
-  if (isTrue === true) {
-    progress.classList.remove("hidden");
-  } else {
-    progress.classList.add("hidden");
-  }
-}
-// displayDrinks("");
+    drinksContainer.appendChild(drinksDiv);
+  });
+};
 displayCatagories();
+// Display Drinks
