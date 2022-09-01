@@ -24,7 +24,7 @@ const displayCatagories = async () => {
       newLi.classList.add("px-4");
       newLi.classList.add("rounded-lg");
       newLi.classList.add("bg-white");
-      newLi.classList.add("hover:bg-orange-500");
+      newLi.classList.add("hover:bg-slate-300");
       //   newLi.textContent = drink.strCategory;
       newLi.innerHTML = `
     <span class="text-black">${drink.strCategory}</span>
@@ -33,17 +33,6 @@ const displayCatagories = async () => {
     }
   });
 };
-
-/* const catagories = document
-  .getElementById("catarories-ul")
-  .addEventListener("click", function (e) {
-    const searchField = document.getElementById("search-field");
-    searchField.value = e.target.innerText;
-
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=${searchField.value}`;
-
-    console.log(url);
-  }); */
 
 const searchField = document.getElementById("search-field");
 
@@ -61,18 +50,27 @@ searchField.addEventListener("keypress", function (event) {
     loadDrinks();
   }
 });
+
 const displayDrinks = (drinks) => {
   const drinksContainer = document.getElementById("drinks-container");
+  drinksContainer.innerHTML = "";
+  console.log(drinks);
+  if (!drinks) {
+  } else {
+    drinks.forEach((drink) => {
+      if (drinks.length === 0) {
+        console.log("No data");
+      }
+      const drinksDiv = document.createElement("div");
+      drinksDiv.classList.add("card");
+      drinksDiv.classList.add("w-60");
+      drinksDiv.classList.add("h-auto");
 
-  drinks.forEach((drink) => {
-    const drinksDiv = document.createElement("div");
-    drinksDiv.classList.add("card");
-    drinksDiv.classList.add("w-60");
-    drinksDiv.classList.add("bg-base-100");
-    drinksDiv.classList.add("shadow-xl");
+      drinksDiv.classList.add("bg-base-100");
+      drinksDiv.classList.add("shadow-xl");
 
-    const { strDrink: name, strDrinkThumb: image } = drink;
-    drinksDiv.innerHTML = `
+      const { strDrink: name, strDrinkThumb: image } = drink;
+      drinksDiv.innerHTML = `
     <figure class="">
     <img src=${image} alt="Drinks" class="rounded-t-xl" />
   </figure>
@@ -85,8 +83,9 @@ const displayDrinks = (drinks) => {
   </div>
     `;
 
-    drinksContainer.appendChild(drinksDiv);
-  });
+      drinksContainer.appendChild(drinksDiv);
+    });
+  }
 };
+
 displayCatagories();
-// Display Drinks
